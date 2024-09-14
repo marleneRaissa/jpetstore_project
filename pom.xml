@@ -235,8 +235,7 @@
             </container>
             <daemon>
               <properties>
-                <cargo.daemon.url>http://localhost:18000</cargo.daemon.url>
-                <cargo.daemon.handleid>${project.artifactId}</cargo.daemon.handleid>
+               <cargo.servlet.port>8081</cargo.servlet.port> 
               </properties>
             </daemon>
           </configuration>
