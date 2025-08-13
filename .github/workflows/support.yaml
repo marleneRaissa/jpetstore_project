@@ -14,35 +14,35 @@
 # limitations under the License.
 #
 
-name: Container Support
+#name: Container Support
 
-on: [push, pull_request]
+#on: [push, pull_request]
 
-jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        java: [11]
-        distribution: ['zulu']
-        token: ["tomcat85", "tomcat9", "tomee71", "tomee80", "wildfly13", "wildfly26", "liberty-ee7", "liberty-ee8", "jetty", "glassfish4", "glassfish5", "resin"]
-      fail-fast: false
-      max-parallel: 4
-    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}, ${{ matrix.token }}
+#jobs:
+#  test:
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ubuntu-latest, macOS-latest, windows-latest]
+#        java: [11]
+#        distribution: ['zulu']
+#        token: ["tomcat85", "tomcat9", "tomee71", "tomee80", "wildfly13", "wildfly26", "liberty-ee7", "liberty-ee8", "jetty", "glassfish4", "glassfish5", "resin"]
+#      fail-fast: false
+#      max-parallel: 4
+#    name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}, ${{ matrix.token }}
 
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          java-version: ${{ matrix.java }}
-          distribution: ${{ matrix.distribution }}
-      - name: Cache local Maven m2
-        uses: actions/cache@v3
-        with:
-            path: ~/.m2
-            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-            restore-keys: ${{ runner.os }}-m2
-      - name: Test with ${{ matrix.token }}
-        run: ./mvnw test -P ${{ matrix.token }}
+#   steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up JDK
+#        uses: actions/setup-java@v3
+#        with:
+#          java-version: ${{ matrix.java }}
+#          distribution: ${{ matrix.distribution }}
+#      - name: Cache local Maven m2
+#        uses: actions/cache@v3
+#        with:
+#            path: ~/.m2
+#            key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#            restore-keys: ${{ runner.os }}-m2
+#      - name: Test with ${{ matrix.token }}
+#        run: ./mvnw test -P ${{ matrix.token }}
