@@ -7,6 +7,18 @@
       apt:
         update_cache: true   
 
+    - name: Stop the container if it's running
+       shell: docker stop petstore-container-1
+       ignore_errors: true
+
+     - name: Remove the stopped container
+       shell: docker rm -f petstore-container-1
+       ignore_errors: true
+
+     - name: Remove the Docker images related to the container
+       shell: docker image prune -a --force
+       ignore_errors: true
+       
     - name: Build Docker Image
       command: docker build -t petstore-image:v1 .
       args:
