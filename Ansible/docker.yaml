@@ -22,7 +22,7 @@
         password: dckr_pat_DrnBEKRbqf_BW6LY6kL1-4KFwqA
 
     - name: Push image
-      command: docker push sevenajay/petstore:latest
+      command: docker push marleneraissa/petstore-image:v1
 
     - name: Run container
       command: docker run -d --name petstore-container-1 -p 8081:8080 marleneraissa/petstore-image:v1
