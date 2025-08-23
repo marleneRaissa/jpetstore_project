@@ -31,7 +31,7 @@
       community.docker.docker_login:
         registry_url: https://index.docker.io/v1/
         username: marleneraissa
-        password: dckr_pat_DrnBEKRbqf_BW6LY6kL1-4KFwqA
+        password: "{{ dockerhub_token }}"
 
     - name: Push image
       command: docker push marleneraissa/petstore-image:v1
