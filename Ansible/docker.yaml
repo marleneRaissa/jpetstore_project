@@ -20,7 +20,7 @@
       ignore_errors: true
        
     - name: Build Docker Image
-      command: docker build -t petstore-image:v1 .
+      command: docker build --progress=plain -t petstore-image:v1 .
       args:
         chdir: /var/lib/jenkins/workspace/petstore_pipeline
 
