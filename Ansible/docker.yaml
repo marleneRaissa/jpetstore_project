@@ -1,5 +1,5 @@
 - name: docker build and push
-  hosts: my-local-server-rmmk  # Replace with the hostname or IP address of your target server
+  hosts: local_server_rmmk  # Replace with the hostname or IP address of your target server
   become: true  # Run tasks with sudo privileges
 
   tasks:
