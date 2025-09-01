@@ -1,0 +1,7 @@
+[my-local-server-rmmk]
+localhost ansible_connection=local
+
+
+# La ligne cruciale pour définir Python ↓
+[my-local-server-rmmk:vars]
+ansible_python_interpreter= /usr/local/bin/python3
