@@ -24,7 +24,7 @@
       command: docker tag petstore-image:v1 marleneraissa/petstore-image:v1 
 
     - name: Log in to Docker Hub
-      command: >
+      shell: >
         echo "{{ dockerhub_token }}"
         | docker login -u marleneraissa --password-stdin
       register: docker_login
@@ -36,7 +36,7 @@
         - "'Already logged in' not in docker_login.stdout"
     
     - name: Verify authentication status
-      command: docker info | grep "Username:"
+      shell: docker info | grep "Username:"
       register: auth_check
       changed_when: false
 
