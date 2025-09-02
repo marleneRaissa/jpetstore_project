@@ -24,10 +24,8 @@
       command: docker tag petstore-image:v1 marleneraissa/petstore-image:v1 
 
     - name: Log in to Docker Hub
-      shell: >
-        echo "{{ dockerhub_token }}"
-        | docker login -u marleneraissa --password-stdin
-      register: docker_login
+      shell: echo "{{ dockerhub_token }}" | docker login -u marleneraissa --password-stdin
+      register: login_result
       changed_when: 
         - docker_login.rc == 0
         - "'Login Succeeded' in docker_login.stdout"
@@ -35,10 +33,14 @@
         - docker_login.rc != 0
         - "'Already logged in' not in docker_login.stdout"
     
-    - name: Verify authentication status
-      shell: docker info | grep "Username:"
-      register: auth_check
+    - name: Get Docker info for authentication check
+      command: docker info
+      register: docker_info
       changed_when: false
+
+    - name: Check authentication status
+      set_fact:
+        docker_authenticated: "{{ 'Username:' in docker_info.stdout }}"
 
     - name: Debug authentication
       debug:
@@ -46,12 +48,12 @@
 
     - name: Push image to Docker Hub
       command: docker push marleneraissa/petstore-image:v1
-      when: auth_check.rc == 0  # Push seulement si authentifié
+      when: docker_authenticated  # Push seulement si authentifié
 
-    - name: Fail if not authenticated
+    - name: Fail if authentication failed
       fail:
-        msg: "Cannot push image: Not authenticated to Docker Hub. Login result: {{ login_result.stderr }}"
-      when: auth_check.rc != 0
+        msg: "Docker authentication failed. Please check your token. Error: {{ login_result.stderr if login_result.stderr else docker_info.stderr }}"
+      when: not docker_authenticated
 
 #    - name: Run container
 #      command: docker run -d --name petstore-container-1 -p 8081:8080 marleneraissa/petstore-image:v1
