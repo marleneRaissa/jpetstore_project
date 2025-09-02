@@ -26,9 +26,7 @@
     - name: Log in to Docker Hub
       command: >
         echo "{{ dockerhub_token }}"
-        | docker login 
-        -u "{{ dockerhub_username }}" 
-        --password-stdin
+        | docker login -u marleneraissa --password-stdin
       register: docker_login
       changed_when: 
         - docker_login.rc == 0
