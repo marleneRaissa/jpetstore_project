@@ -24,6 +24,11 @@
       command: docker tag petstore-image:v1 marleneraissa/petstore-image:v1 
 
     - name: Log in to Docker Hub
+      community.docker.docker_login:
+        username: "marleneraissa"
+        password: "{{ dockerhub_token }}"
+
+    - name: Log in to Docker Hub
       shell: echo "{{ dockerhub_token }}" | docker login -u marleneraissa --password-stdin
       register: login_result
       changed_when: 
