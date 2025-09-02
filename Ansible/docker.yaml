@@ -26,11 +26,16 @@
     - name: Log in to Docker Hub
       command: >
         echo "{{ dockerhub_token }}"
-        | docker login -u marleneraissa --password-stdin
-      args:
-        timeout: 120
+        | docker login 
+        -u "{{ dockerhub_username }}" 
+        --password-stdin
       register: docker_login
-      changed_when: "'Login Succeeded' in docker_login.stdout"
+      changed_when: 
+        - docker_login.rc == 0
+        - "'Login Succeeded' in docker_login.stdout"
+      failed_when: 
+        - docker_login.rc != 0
+        - "'Already logged in' not in docker_login.stdout"
 
     - name: Push image
       command: docker push marleneraissa/petstore-image:v1
