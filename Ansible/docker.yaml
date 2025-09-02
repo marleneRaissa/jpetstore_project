@@ -24,7 +24,13 @@
       command: docker tag petstore-image:v1 marleneraissa/petstore-image:v1 
 
     - name: Log in to Docker Hub
-      command: docker login -u marleneraissa -p {{ dockerhub_token }}
+      command: >
+        echo "{{ dockerhub_token }}"
+        | docker login -u marleneraissa --password-stdin
+      args:
+        timeout: 120
+      register: docker_login
+      changed_when: "'Login Succeeded' in docker_login.stdout"
 
     - name: Push image
       command: docker push marleneraissa/petstore-image:v1
