@@ -27,38 +27,11 @@
       community.docker.docker_login:
         username: "marleneraissa"
         password: "{{ dockerhub_token }}"
-
-    - name: Log in to Docker Hub
-      shell: echo "{{ dockerhub_token }}" | docker login -u marleneraissa --password-stdin
-      register: login_result
-      changed_when: 
-        - docker_login.rc == 0
-        - "'Login Succeeded' in docker_login.stdout"
-      failed_when: 
-        - docker_login.rc != 0
-        - "'Already logged in' not in docker_login.stdout"
     
-    - name: Get Docker info for authentication check
-      command: docker info
-      register: docker_info
-      changed_when: false
-
-    - name: Check authentication status
-      set_fact:
-        docker_authenticated: "{{ 'Username:' in docker_info.stdout }}"
-
-    - name: Debug authentication
-      debug:
-        msg: "Docker authentication: {{ auth_check.stdout if auth_check.rc == 0 else 'Not authenticated' }}"
-
     - name: Push image to Docker Hub
       command: docker push marleneraissa/petstore-image:v1
       when: docker_authenticated  # Push seulement si authentifié
 
-    - name: Fail if authentication failed
-      fail:
-        msg: "Docker authentication failed. Please check your token. Error: {{ login_result.stderr if login_result.stderr else docker_info.stderr }}"
-      when: not docker_authenticated
 
 #    - name: Run container
 #      command: docker run -d --name petstore-container-1 -p 8081:8080 marleneraissa/petstore-image:v1

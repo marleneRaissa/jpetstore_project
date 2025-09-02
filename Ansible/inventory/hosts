@@ -1,7 +1,3 @@
 [local]
 localhost ansible_connection=local
 
-
-# La ligne cruciale pour définir Python
-[local:vars]
-ansible_python_interpreter=/opt/homebrew/bin/python3
