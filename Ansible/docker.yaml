@@ -3,9 +3,9 @@
   become: true  # Run tasks with sudo privileges
 
   tasks:
-    - name: Update apt package cache
-      apt:
-        update_cache: true   
+#    - name: Update apt package cache #pa s de apt sur mac
+#      apt:
+#        update_cache: true   
 
     - name: Stop the container if it's running
       command: docker stop petstore-container-1
