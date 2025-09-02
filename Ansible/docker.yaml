@@ -34,9 +34,24 @@
       failed_when: 
         - docker_login.rc != 0
         - "'Already logged in' not in docker_login.stdout"
+    
+    - name: Verify authentication status
+      command: docker info | grep "Username:"
+      register: auth_check
+      changed_when: false
 
-    - name: Push image
+    - name: Debug authentication
+      debug:
+        msg: "Docker authentication: {{ auth_check.stdout if auth_check.rc == 0 else 'Not authenticated' }}"
+
+    - name: Push image to Docker Hub
       command: docker push marleneraissa/petstore-image:v1
+      when: auth_check.rc == 0  # Push seulement si authentifié
+
+    - name: Fail if not authenticated
+      fail:
+        msg: "Cannot push image: Not authenticated to Docker Hub. Login result: {{ login_result.stderr }}"
+      when: auth_check.rc != 0
 
 #    - name: Run container
 #      command: docker run -d --name petstore-container-1 -p 8081:8080 marleneraissa/petstore-image:v1
