@@ -30,7 +30,7 @@
     
     - name: Push image to Docker Hub
       command: docker push marleneraissa/petstore-image:v1
-      when: docker_authenticated  # Push seulement si authentifié
+      #when: docker_authenticated  # Push seulement si authentifié
 
 
 #    - name: Run container
