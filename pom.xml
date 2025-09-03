@@ -234,13 +234,13 @@
               </zipUrlInstaller>
             </container>
             <!-- AJOUTEZ CETTE SECTION -->
-            <configuration>
-                <properties>
-                    <cargo.servlet.port>8081</cargo.servlet.port> <!-- Changez le port ici -->
-                    <cargo.tomcat.ajp.port>8009</cargo.tomcat.ajp.port>
-                    <cargo.tomcat.shutdown.port>8005</cargo.tomcat.shutdown.port>
-                </properties>
-            </configuration>
+            <!-- <configuration> -->
+                <!--<properties> -->
+                    <!--<cargo.servlet.port>8081</cargo.servlet.port> --> <!-- Changez le port ici -->
+                    <!--<cargo.tomcat.ajp.port>8009</cargo.tomcat.ajp.port> -->
+                    <!--<cargo.tomcat.shutdown.port>8005</cargo.tomcat.shutdown.port> -->
+                <!--</properties> -->
+            <!--</configuration> -->
             <!-- FIN DE L'AJOUT -->
             <daemon>
               <properties>
