@@ -23,13 +23,19 @@
 #CMD ./mvnw cargo:run -P tomcat90
 
 ## -------------------------Methode2--------------------------------##
-FROM maven:3.9.9-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package
+#FROM maven:3.9.9-eclipse-temurin-17 AS build
+#WORKDIR /app
+#COPY . .
+#RUN mvn clean package
 
+#FROM tomcat:9.0-jdk17
+#COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/petstore.war
+#EXPOSE 8081
+#CMD ["catalina.sh", "run"]
+
+## -------------------------Methode3--------------------------------##
 FROM tomcat:9.0-jdk17
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/petstore.war
+WORKDIR /usr/local/tomcat/webapps
+COPY target/*.war petstore.war
 EXPOSE 8081
 CMD ["catalina.sh", "run"]
-
