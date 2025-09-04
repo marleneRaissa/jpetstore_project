@@ -1,0 +1,24 @@
+- name: "====================== Docker build and push ======================"
+  hosts: local  # Replace with the hostname or IP address of your target server
+
+  tasks:
+    - name: "=========== Stop the container if it's running ==========="
+      ansible.builtin.command: docker stop petstore-container-1
+      ignore_errors: true
+
+    - name: "=========== Remove the stopped container ==========="
+      ansible.builtin.command: docker rm -f petstore-container-1
+      ignore_errors: true
+
+    - name: "=========== Remove the Docker images related to the container ==========="
+      ansible.builtin.command: docker image prune -a --force
+      ignore_errors: true
+
+    - name: "=========== Build Docker Image ==========="
+      ansible.builtin.command: docker build -t {{ ecr_app_name }}:v1 .  
+      args:
+        chdir: "{{ workspace }}"
+
+    - name: "=========== Tag Petstore image ==========="
+      ansible.builtin.command: docker tag petstore-image:v1 {{ ecr_repo_url }}/{{ ecr_app_name }}:v1 
+
