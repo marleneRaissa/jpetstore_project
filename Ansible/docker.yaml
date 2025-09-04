@@ -28,4 +28,4 @@
         password: "{{ dockerhub_token }}"
     
     - name: "=========== Push image to Docker Hub ==========="
-      ansible.builtin.command: docker push marleneraissa/petstore-image:v1
+      ansible.builtin.command: docker push {{ ecr_repo_url }}/{{ ecr_app_name }}:v1
