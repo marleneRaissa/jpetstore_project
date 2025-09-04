@@ -30,7 +30,11 @@
   <artifactId>jpetstore</artifactId>
   <version>6.1.1-SNAPSHOT</version>
   <packaging>war</packaging>
-
+<!---
+  si tu voulais un jour publier ton projet sur Maven Central ou générer de la documentation Maven, 
+  il faudrait garder ces infos. Elle sert uniquement à la documentation et à la publication du 
+  projet d’origine (jpetstore officiel de MyBatis).
+  
   <name>JPetStore Demo 6</name>
   <url>http://www.mybatis.org</url>
 
@@ -55,7 +59,7 @@
       <url>git:ssh://git@github.com/mybatis/jpetstore-6.git?gh-pages#</url>
     </site>
   </distributionManagement>
-
+-->
   <dependencies>
     
     <dependency>
