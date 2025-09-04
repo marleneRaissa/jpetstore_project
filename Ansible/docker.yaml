@@ -1,6 +1,6 @@
 - name: "====================== Docker build and push ======================"
   hosts: local  # Replace with the hostname or IP address of your target server
-  become: true  # Run tasks with sudo privileges
+  #become: true  # Run tasks with sudo privileges
 
   tasks:
     - name: "=========== Stop the container if it's running ==========="
