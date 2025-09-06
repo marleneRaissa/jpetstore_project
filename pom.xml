@@ -60,17 +60,6 @@
     </site>
   </distributionManagement>
 -->
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-framework-bom</artifactId>
-        <version>6.1.10</version> <!-- Mets la dernière version stable 6.1.x -->
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     
@@ -87,17 +76,17 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <!-- <version>${spring.version}</version> -->
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <!-- <version>${spring.version}</version> -->
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <!-- <version>${spring.version}</version> -->
+      <version>${spring.version}</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.stripes</groupId>
@@ -199,7 +188,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <!-- <version>${spring.version}</version> -->
+      <version>${spring.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
