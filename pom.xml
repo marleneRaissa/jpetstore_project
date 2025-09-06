@@ -60,6 +60,18 @@
     </site>
   </distributionManagement>
 -->
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>6.1.10</version> <!-- Mets la dernière version stable 6.1.x -->
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     
     <dependency>
@@ -75,17 +87,17 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>${spring.version}</version>
+      <!-- <version>${spring.version}</version> -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>${spring.version}</version>
+      <!-- <version>${spring.version}</version> -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>${spring.version}</version>
+      <!-- <version>${spring.version}</version> -->
     </dependency>
     <dependency>
       <groupId>net.sourceforge.stripes</groupId>
@@ -187,7 +199,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>${spring.version}</version>
+      <!-- <version>${spring.version}</version> -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -335,7 +347,7 @@
     <cargo-maven3-plugin.version>1.10.9</cargo-maven3-plugin.version>
     <clirr.comparisonVersion>6.0.2</clirr.comparisonVersion>
 
-    <spring.version>5.3.29</spring.version>
+    <!-- <spring.version>5.3.29</spring.version> -->
     <assertj.version>3.24.2</assertj.version>
     <mockito.version>5.5.0</mockito.version>
     <hsqldb.version>2.7.2</hsqldb.version>
