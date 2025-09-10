@@ -1,5 +1,5 @@
 - name: "====================== Docker Push and Run Container ======================"
-  hosts: local  # Replace with the hostname or IP address of your target server
+  hosts: webserver  # Replace with the hostname or IP address of your target server
 
   tasks:
     - name: "=========== Login to Docker Hub ==========="

@@ -1,5 +1,5 @@
 - name: "====================== Docker build and push ======================"
-  hosts: local  # Replace with the hostname or IP address of your target server
+  hosts: webserver  # Replace with the hostname or IP address of your target server
 
   tasks:
     - name: "=========== Stop the container if it's running ==========="
