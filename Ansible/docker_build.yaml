@@ -11,7 +11,7 @@
           - curl
           - gnupg
         state: present
-        update_cache: true
+        #update_cache: true
 
     - name: "=========== Create directory for apt keyrings ==========="
       ansible.builtin.file:
