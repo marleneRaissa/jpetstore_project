@@ -15,10 +15,18 @@
       ansible.builtin.command: docker image prune -a --force
       ignore_errors: true
 
+    - name: "=========== Copy project files to VM ==========="
+      ansible.builtin.copy:
+        src: "{{ workspace }}/"
+        dest: /home/ubuntu/petstore/
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
     - name: "=========== Build Docker Image ==========="
       ansible.builtin.command: docker build -t {{ ecr_app_name }}:v1 .  
       args:
-        chdir: "{{ workspace }}"
+        chdir: /home/ubuntu/petstore
 
     - name: "=========== Tag Petstore image ==========="
       ansible.builtin.command: docker tag petstore-image:v1 {{ ecr_repo_url }}/{{ ecr_app_name }}:v1 
