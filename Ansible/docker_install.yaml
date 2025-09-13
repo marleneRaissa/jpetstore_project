@@ -11,7 +11,7 @@
           - curl
           - gnupg
           - lsb-release
-      state: present
+        state: present
 
     - name: "=========== Create directory for apt keyrings ==========="
       ansible.builtin.file:
