@@ -58,7 +58,7 @@
           - containerd.io
           - docker-buildx-plugin
           - docker-compose-plugin
-      state: present
+        state: present
 
     - name: "=========== Ensure Docker service is running and enableds ==========="
       ansible.builtin.systemd:
