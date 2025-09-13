@@ -52,7 +52,7 @@
 
     - name: Install Docker Engines ==========="
       ansible.builtin.apt:
-        name: "{{ item }}"
+        name:
           - docker-ce
           - docker-ce-cli
           - containerd.io
@@ -71,6 +71,3 @@
         name: "{{ ansible_user }}"
         groups: docker
         append: true
-
-
-  
