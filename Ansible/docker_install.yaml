@@ -12,6 +12,7 @@
           - gnupg
           - lsb-release
         state: present
+        update_cache: true
 
     - name: "=========== Create directory for apt keyrings ==========="
       ansible.builtin.file:
@@ -26,8 +27,9 @@
         mode: '0644'
 
     - name: "=========== Convert and install Docker GPG keys ==========="
-      ansible.builtin.shell:
-        cmd: gpg --dearmor -o /etc/apt/keyrings/docker.gpg /tmp/docker.gpg
+      ansible.builtin.shell: |
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      args:
         creates: /etc/apt/keyrings/docker.gpg
 
     - name: "=========== Set correct permissions on Docker GPG keys ==========="
@@ -59,6 +61,7 @@
           - docker-buildx-plugin
           - docker-compose-plugin
         state: present
+        update_cache: true
 
     - name: "=========== Ensure Docker service is running and enableds ==========="
       ansible.builtin.systemd:
