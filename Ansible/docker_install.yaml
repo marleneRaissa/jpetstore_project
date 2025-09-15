@@ -4,8 +4,7 @@
   hosts: webserver02
   become: true
   tasks:
-# --- Remplacer la tâche "Add Docker’s official GPG key" par ceci ---
-      - name: Ensure prerequisites for Docker repo
+      - name: "=========== Ensure prerequisites for Docker repo ==========="
         ansible.builtin.apt:
           name:
             - ca-certificates
@@ -15,41 +14,64 @@
           state: present
           update_cache: true
 
-      - name: Remove cdrom entries (if any) to avoid apt errors
+      - name: Remove cdrom entries (if any) to avoid apt errors ==========="
         ansible.builtin.replace:
           path: /etc/apt/sources.list
           regexp: '^deb cdrom:.*'
           replace: '# deb cdrom disabled'
 
-      - name: Create keyrings directory for Docker
+      - name: "=========== Create keyrings directory for Docker ==========="
         ansible.builtin.file:
           path: /etc/apt/keyrings
           state: directory
           mode: '0755'
 
-      - name: Download Docker GPG key (ASCII)
+      - name: "=========== Download Docker GPG key (ASCII) ==========="
         ansible.builtin.get_url:
           url: https://download.docker.com/linux/ubuntu/gpg
           dest: /etc/apt/keyrings/docker.asc
           mode: '0644'
 
-      - name: Convert Docker GPG key to binary keyring
+      - name: "=========== Convert Docker GPG key to binary keyring ==========="
         ansible.builtin.command:
           cmd: gpg --dearmor -o /etc/apt/keyrings/docker.gpg /etc/apt/keyrings/docker.asc
         args:
           creates: /etc/apt/keyrings/docker.gpg
 
-      - name: Ensure permissions on the docker keyring
+      - name: "=========== Ensure permissions on the docker keyring ==========="
         ansible.builtin.file:
           path: /etc/apt/keyrings/docker.gpg
           mode: '0644'
 
-      - name: Add Docker APT repository (use a supported codename)
+      - name: "=========== Add Docker APT repository (use a supported codename) ==========="
         ansible.builtin.copy:
           dest: /etc/apt/sources.list.d/docker.list
           content: |
             deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable
 
-      - name: Update apt cache
+      - name: "=========== Update apt cache ==========="
         ansible.builtin.apt:
           update_cache: true
+
+      - name: Install Docker Engines ==========="
+        ansible.builtin.apt:
+          name:
+            - docker-ce
+            - docker-ce-cli
+            - containerd.io
+            - docker-buildx-plugin
+            - docker-compose-plugin
+          state: present
+          update_cache: true
+
+      - name: "=========== Ensure Docker service is running and enableds ==========="
+        ansible.builtin.systemd:
+          name: docker
+          state: started
+          enabled: true
+
+      - name: "=========== Add current user to docker group (optional)s ==========="
+        ansible.builtin.user:
+          name: "{{ ansible_user }}"
+          groups: docker
+          append: true
