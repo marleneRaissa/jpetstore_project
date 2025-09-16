@@ -1,77 +1,75 @@
 ---
-
-- name: Install Docker on Ubuntu
+- name: Installer Docker sur Ubuntu
   hosts: webserver02
   become: true
+
   tasks:
-      - name: "=========== Ensure prerequisites for Docker repo ==========="
-        ansible.builtin.apt:
-          name:
-            - ca-certificates
-            - curl
-            - gnupg
-            - lsb-release
-          state: present
-          update_cache: true
+    - name: Supprimer les anciens dépôts APT
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d
+        state: absent
 
-      - name: Remove cdrom entries (if any) to avoid apt errors ==========="
-        ansible.builtin.replace:
-          path: /etc/apt/sources.list
-          regexp: '^deb cdrom:.*'
-          replace: '# deb cdrom disabled'
+    - name: Supprimer l'entrée cdrom dans sources.list
+      ansible.builtin.replace:
+        path: /etc/apt/sources.list
+        regexp: '^.*cdrom.*$'
+        replace: ''
 
-      - name: "=========== Create keyrings directory for Docker ==========="
-        ansible.builtin.file:
-          path: /etc/apt/keyrings
-          state: directory
-          mode: '0755'
+    - name: Mettre à jour les dépôts
+      ansible.builtin.apt:
+        update_cache: true
 
-      - name: "=========== Download Docker GPG key (ASCII) ==========="
-        ansible.builtin.get_url:
-          url: https://download.docker.com/linux/ubuntu/gpg
-          dest: /etc/apt/keyrings/docker.asc
-          mode: '0644'
+    - name: Installer les dépendances
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+        update_cache: true
 
-      - name: "=========== Convert Docker GPG key to binary keyring ==========="
-        ansible.builtin.command:
-          cmd: gpg --dearmor -o /etc/apt/keyrings/docker.gpg /etc/apt/keyrings/docker.asc
-        args:
-          creates: /etc/apt/keyrings/docker.gpg
+    - name: Créer le répertoire des clés APT
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
 
-      - name: "=========== Ensure permissions on the docker keyring ==========="
-        ansible.builtin.file:
-          path: /etc/apt/keyrings/docker.gpg
-          mode: '0644'
+    - name: Ajouter la clé GPG Docker
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        dest: /etc/apt/keyrings/docker.gpg
+        mode: '0644'
 
-      - name: "=========== Add Docker APT repository (use a supported codename) ==========="
-        ansible.builtin.copy:
-          dest: /etc/apt/sources.list.d/docker.list
-          content: |
-            deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable
+    - name: Ajouter le dépôt Docker
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        content: |
+          deb [arch={{ ansible_architecture }} signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
 
-      - name: "=========== Update apt cache ==========="
-        ansible.builtin.apt:
-          update_cache: true
+    - name: Mettre à jour les dépôts après ajout Docker
+      ansible.builtin.apt:
+        update_cache: true
 
-      - name: Install Docker Engines ==========="
-        ansible.builtin.apt:
-          name:
-            - docker-ce
-            - docker-ce-cli
-            - containerd.io
-            - docker-buildx-plugin
-            - docker-compose-plugin
-          state: present
-          update_cache: true
+    - name: Installer Docker Engine et ses composants
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+          - docker-ce-rootless-extras
+        state: present
+    
+    - name: "=========== Ensure Docker service is running and enableds ==========="
+      ansible.builtin.systemd:
+        name: docker
+        state: started
+        enabled: true
 
-      - name: "=========== Ensure Docker service is running and enableds ==========="
-        ansible.builtin.systemd:
-          name: docker
-          state: started
-          enabled: true
-
-      - name: "=========== Add current user to docker group (optional)s ==========="
-        ansible.builtin.user:
-          name: "{{ ansible_user }}"
-          groups: docker
-          append: true
+    - name: "=========== Add current user to docker group (optional)s ==========="
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
